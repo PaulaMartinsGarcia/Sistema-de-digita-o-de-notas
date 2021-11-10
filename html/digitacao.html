@@ -19,7 +19,7 @@
           <img src="img/logo.svg" alt="logo" />
         </div>
         <div class="col-sm-10 col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-          <form class="border border-light border-2 rounded-3 p-3">
+          <form class="border border-light border-2 rounded-3 p-3" onsubmit="return false;">
             <div class="col">
               <label for="name" class="form-label">Nome do Aluno</label>
               <input type="text" name="name" id="name" class="form-control" />
@@ -46,9 +46,14 @@
                 <input type="number" name="media" id="media" class="form-control" disabled/>
               </div>
             <div class="row">
-              <div class="col-12 col-sm-6 mb-2">
-                <button type="button" class="btn btn-primary w-100" onclick="window.location.href='digitacao.html'">
+              <div class="col-12 col-sm-6 mb-2 mt-2 mt-md-0">
+                <button type="button" class="btn btn-primary w-100" onclick="salvarAluno()">
                   Cadastrar
+                </button>
+              </div>
+              <div class="col-12 col-sm-6 mb-2">
+                <button type="button" class="btn btn-primary w-100" onclick="goToListagem()">
+                  Listagem de notas
                 </button>
               </div>
             </div>
@@ -64,6 +69,9 @@
     ></script>
 
     <script>
+      let nome = document.getElementById('name');
+      let rgm = document.getElementById('rgm');
+      let turma = document.getElementById('turma');
       let nota1 = document.getElementById('nota1');
       let nota2 = document.getElementById('nota2');
       let media = document.getElementById('media');
@@ -73,6 +81,40 @@
 
       function calcularMedia(){
         media.value = (nota1.valueAsNumber + nota2.valueAsNumber) / 2;
+      }
+
+      function salvarAluno(){
+        let alunos = Array();
+
+        if (localStorage.students) {
+          alunos = JSON.parse(localStorage.getItem('students'));
+        }
+
+        let aluno = {
+          nome: nome.value,
+          rgm: rgm.value,
+          turma: turma.value,
+          nota1: nota1.value,
+          nota2: nota2.value,
+          media: media.value
+        }
+
+        alunos.push(aluno)
+        
+        localStorage.setItem('students',JSON.stringify(alunos));
+        alert('Cadastrado com sucesso!');
+
+        nome.value = '';
+        rgm.value = '';
+        turma.value = '';
+        nota1.value = '';
+        nota2.value = '';
+        media.value = '';
+        
+      }
+
+      function goToListagem(){
+        window.location.href = 'listagem.html';
       }
     </script>
   </body>
